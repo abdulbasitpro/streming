@@ -10,15 +10,15 @@ import asyncio
 load_dotenv()
 
 gemini_api_key = os.getenv("GEMINI_API_KEY")
-gemini_model = os.getenv("_MODEL")
+gemini_model = os.getenv("gemini/gemini-2.0-flash")
 set_tracing_disabled(disabled=True)
 
 # Check if the API key is present; if not, raise an error
-if not groq_api_key:
+if not gemini_api_key:
     raise ValueError(
         "GROQ_API_KEY is not set. Please ensure it is defined in your .env file."
     )
-if not groq_model:
+if not gemini_model:
     raise ValueError(
         "GROQ_MODEL is not set. Please ensure it is defined in your .env file."
     )
@@ -28,7 +28,7 @@ async def main():
     agent = Agent(
         name="Joker",
         instructions="You are helpful Assistent.",
-        model=LitellmModel(model=str(groq_model), api_key=groq_api_key)
+        model=LitellmModel(model=str(gemini_model), api_key=gemini_api_key)
     )
     result = Runner.run_streamed(agent, input="Please tell me 5 jokes.")
 
@@ -38,3 +38,6 @@ async def main():
 
 def main_wrapper():
     asyncio.run(main())
+    
+if __name__ == "__main__":
+    main_wrapper()
